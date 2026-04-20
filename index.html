@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sizzler Copy Studio</title>
+<style>
+  @font-face {
+    font-family: 'SizzlerWindsor';
+    src: url('/fonts/Sizzler_Windsor.otf') format('opentype');
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BlockBerthold';
+    src: url('/fonts/BlockW1G-Heavy.otf') format('opentype');
+    font-weight: 800;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BlockBerthold';
+    src: url('/fonts/BlockW1G-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BlockBerthold';
+    src: url('/fonts/BlockW1G-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BlockBertholdCondensed';
+    src: url('/fonts/BlockW1G-Condensed.otf') format('opentype');
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  :root {
+    --sizzler-red: #F00013;
+    --maroon: #81000C;
+    --cream: #F2E7CD;
+    --cream-soft: #FAF2DC;
+    --ink: #1a0003;
+    --line: rgba(129, 0, 12, 0.25);
+    --line-strong: #81000C;
+    --ok: #0f6e56;
+    --warn: #b5431a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; color: var(--ink); background: var(--cream); line-height: 1.5; }
+
+  .page { max-width: 760px; margin: 0 auto; }
+
+  /* HEADER */
+  .header { background: var(--sizzler-red); color: var(--cream); padding: 28px 32px 24px; border-bottom: 4px solid var(--maroon); }
+  .header-inner { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left { min-width: 0; }
+  .header-title { font-family: 'SizzlerWindsor', Georgia, serif; font-size: 42px; color: var(--cream); letter-spacing: -0.01em; line-height: 0.95; text-transform: uppercase; }
+  .header-sub { font-family: 'BlockBertholdCondensed', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin-top: 8px; color: var(--cream); opacity: 0.9; }
+  .header-badge { font-family: 'BlockBertholdCondensed', 'Helvetica Neue', Arial, sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--maroon); background: var(--cream); padding: 6px 12px; border-radius: 3px; flex-shrink: 0; }
+
+  /* BODY */
+  .body { padding: 32px; }
+
+  /* STEP */
+  .step { margin-bottom: 28px; }
+  .step-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--maroon); }
+  .step-num { font-family: 'SizzlerWindsor', Georgia, serif; font-size: 24px; color: var(--sizzler-red); line-height: 1; }
+  .step-title { font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 17px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--maroon); }
+  .step-hint { font-family: 'BlockBertholdCondensed', 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--maroon); opacity: 0.65; margin-left: auto; letter-spacing: 0.02em; }
+
+  /* PILL BUTTONS */
+  .pills { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; }
+  .pill { background: var(--cream-soft); border: 1.5px solid var(--maroon); padding: 11px 13px; font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--maroon); cursor: pointer; text-align: left; transition: all 0.12s; border-radius: 3px; line-height: 1.2; }
+  .pill:hover { background: #fff; border-color: var(--sizzler-red); }
+  .pill.active { background: var(--maroon); color: var(--cream); border-color: var(--maroon); }
+  .pill-sub { display: block; font-family: 'BlockBertholdCondensed', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; font-size: 11px; letter-spacing: 0.02em; text-transform: none; margin-top: 3px; opacity: 0.75; }
+  .pill.active .pill-sub { opacity: 0.85; }
+
+  /* INPUTS */
+  .brief { width: 100%; min-height: 96px; padding: 14px 16px; font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; font-size: 15px; border: 1.5px solid var(--maroon); background: #fff; color: var(--ink); resize: vertical; line-height: 1.5; border-radius: 3px; }
+  .brief:focus { outline: none; border-color: var(--sizzler-red); }
+  .brief::placeholder { color: var(--maroon); opacity: 0.45; font-style: italic; }
+
+  .loc-input { width: 100%; padding: 13px 16px; font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; font-size: 15px; border: 1.5px solid var(--maroon); background: #fff; color: var(--ink); border-radius: 3px; }
+  .loc-input:focus { outline: none; border-color: var(--sizzler-red); }
+  .loc-input::placeholder { color: var(--maroon); opacity: 0.45; }
+
+  /* GENERATE */
+  .generate { width: 100%; padding: 20px; font-family: 'SizzlerWindsor', Georgia, serif; font-size: 24px; letter-spacing: 0.03em; text-transform: uppercase; background: var(--sizzler-red); color: var(--cream); border: none; cursor: pointer; margin-top: 12px; margin-bottom: 32px; border-radius: 3px; transition: background 0.15s; }
+  .generate:hover:not(:disabled) { background: var(--maroon); }
+  .generate:disabled { background: #a8a8a8; color: #eee; cursor: not-allowed; }
+
+  /* OUTPUT */
+  .output { display: none; }
+  .output.visible { display: block; }
+  .output-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 3px solid var(--sizzler-red); }
+  .output-title { font-family: 'SizzlerWindsor', Georgia, serif; font-size: 26px; color: var(--maroon); line-height: 1; text-transform: uppercase; }
+  .output-sub { font-family: 'BlockBertholdCondensed', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--maroon); opacity: 0.7; margin-left: auto; }
+
+  /* VARIANT */
+  .variant { background: #fff; border: 1.5px solid var(--maroon); padding: 22px 22px 18px; margin-bottom: 14px; border-radius: 3px; position: relative; }
+  .variant-tag { position: absolute; top: -11px; left: 16px; padding: 4px 12px; font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); border-radius: 2px; }
+  .variant-tag-fresh { background: var(--sizzler-red); }
+  .variant-tag-craveable { background: var(--maroon); }
+  .variant-tag-delightful { background: var(--ink); }
+
+  .variant-head { display: flex; justify-content: flex-end; margin-bottom: 10px; margin-top: 4px; }
+  .variant-btn { font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; background: transparent; border: 1.5px solid var(--maroon); color: var(--maroon); padding: 6px 12px; cursor: pointer; border-radius: 2px; transition: all 0.12s; }
+  .variant-btn:hover { background: var(--maroon); color: var(--cream); }
+  .variant-btn.copied { background: var(--ok); color: var(--cream); border-color: var(--ok); }
+
+  .variant-body { font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; font-size: 15px; line-height: 1.6; color: var(--ink); white-space: pre-wrap; }
+
+  .variant-meta { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--line); font-family: 'BlockBertholdCondensed', 'Helvetica Neue', Arial, sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--maroon); display: flex; gap: 14px; flex-wrap: wrap; opacity: 0.85; }
+  .meta-count.ok { color: var(--ok); font-weight: 700; }
+  .meta-count.warn { color: var(--warn); font-weight: 700; }
+
+  /* EMAIL & GOOGLE BIZ STRUCTURED OUTPUT */
+  .email-field { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed var(--line); }
+  .email-field:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .email-field-label { font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 10px; color: var(--maroon); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 4px; }
+  .email-field-body { font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; font-size: 14px; line-height: 1.55; color: var(--ink); }
+
+  .gbiz-headline { font-family: 'SizzlerWindsor', Georgia, serif; font-size: 22px; line-height: 1.1; margin-bottom: 8px; color: var(--maroon); text-transform: uppercase; letter-spacing: -0.01em; }
+  .gbiz-body { font-size: 14px; line-height: 1.55; margin-bottom: 12px; }
+  .gbiz-button-hint { display: inline-block; font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px; background: var(--cream-soft); border: 1px solid var(--maroon); border-radius: 3px; color: var(--maroon); }
+
+  /* STATUS */
+  .status { text-align: center; padding: 30px 12px; color: var(--maroon); font-family: 'BlockBertholdCondensed', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; letter-spacing: 0.04em; }
+  .status-spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid var(--line); border-top-color: var(--sizzler-red); border-radius: 50%; animation: spin 0.9s linear infinite; margin-bottom: 14px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error { padding: 14px 16px; background: #fff3f3; border: 1.5px solid var(--sizzler-red); border-radius: 3px; color: var(--maroon); font-size: 13px; margin-bottom: 12px; font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; }
+
+  /* FOOTER */
+  .footer { background: var(--maroon); color: var(--cream); padding: 22px 32px; font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 400; font-size: 12px; line-height: 1.6; text-align: center; }
+  .footer-label { font-family: 'BlockBerthold', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 6px; opacity: 0.9; }
+
+  @media (max-width: 560px) {
+    .header { padding: 22px 20px 20px; }
+    .header-title { font-size: 32px; }
+    .body { padding: 24px 20px; }
+    .footer { padding: 18px 20px; }
+    .pills { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+    .generate { padding: 16px; font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="header-title">Copy Studio</div>
+        <div class="header-sub">Sizzler × Tavern · The Well Done Voice</div>
+      </div>
+      <div class="header-badge">Franchisee Tool</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">01</span>
+        <span class="step-title">Channel</span>
+        <span class="step-hint">each has its own format rules</span>
+      </div>
+      <div class="pills" id="channel-grid">
+        <button class="pill" data-value="Instagram post">Instagram post<span class="pill-sub">125-220 chars</span></button>
+        <button class="pill" data-value="Instagram caption">Instagram caption<span class="pill-sub">150-400 chars</span></button>
+        <button class="pill" data-value="Facebook post">Facebook post<span class="pill-sub">100-250 chars</span></button>
+        <button class="pill" data-value="Email subject">Email subject<span class="pill-sub">30-50 chars</span></button>
+        <button class="pill" data-value="Email body">Email body<span class="pill-sub">full structure</span></button>
+        <button class="pill" data-value="SMS">SMS<span class="pill-sub">160 char cap</span></button>
+        <button class="pill" data-value="Google Business">Google Business<span class="pill-sub">150-300 chars</span></button>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">02</span>
+        <span class="step-title">Campaign type</span>
+      </div>
+      <div class="pills" id="campaign-grid">
+        <button class="pill" data-value="Limited time offer">Limited time offer</button>
+        <button class="pill" data-value="New menu item">New menu item</button>
+        <button class="pill" data-value="Price promo / deal">Price promo</button>
+        <button class="pill" data-value="Seasonal / holiday">Seasonal</button>
+        <button class="pill" data-value="Well Done moment">Well Done moment</button>
+        <button class="pill" data-value="Loyalty / rewards">Loyalty</button>
+        <button class="pill" data-value="General reminder">General reminder</button>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">03</span>
+        <span class="step-title">What's this about?</span>
+      </div>
+      <textarea class="brief" id="brief" placeholder="e.g. Cheezze Toast Month is back. $1 per order goes to the local food bank. Runs all of February."></textarea>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">04</span>
+        <span class="step-title">Call to action</span>
+      </div>
+      <div class="pills" id="cta-grid">
+        <button class="pill" data-value="Visit / come in">Visit / come in</button>
+        <button class="pill" data-value="Order online">Order online</button>
+        <button class="pill" data-value="Engage (social)">Engage</button>
+        <button class="pill" data-value="No CTA needed">No CTA</button>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">05</span>
+        <span class="step-title">Your restaurant location</span>
+        <span class="step-hint">used when copy calls for local flavor</span>
+      </div>
+      <input type="text" class="loc-input" id="location" placeholder="e.g. Bakersfield, CA" />
+    </div>
+
+    <button class="generate" id="generate-btn">Cook it up</button>
+
+    <div class="output" id="output">
+      <div class="output-head">
+        <div class="output-title" id="output-title">Three servings</div>
+        <div class="output-sub" id="output-sub"></div>
+      </div>
+      <div id="output-body"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span class="footer-label">Brand steward reminder</span>
+    All copy drafted here must be reviewed and approved by the Sizzler brand team or Tavern<br>(brand guardianship team) before going live. Headlines and taglines must be searched and cleared before use.
+  </div>
+
+</div>
+
+<script>
+  const LOCATION_KEY = 'sizzler_copy_studio_location';
+  const state = {
+    channel: null,
+    campaign_type: null,
+    cta: null,
+  };
+
+  function wireGrid(gridId, stateKey) {
+    const grid = document.getElementById(gridId);
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill');
+      if (!btn) return;
+      grid.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state[stateKey] = btn.dataset.value;
+    });
+  }
+
+  wireGrid('channel-grid', 'channel');
+  wireGrid('campaign-grid', 'campaign_type');
+  wireGrid('cta-grid', 'cta');
+
+  const locInput = document.getElementById('location');
+  const saved = localStorage.getItem(LOCATION_KEY);
+  if (saved) locInput.value = saved;
+  locInput.addEventListener('blur', () => {
+    localStorage.setItem(LOCATION_KEY, locInput.value.trim());
+  });
+
+  function escapeHtml(str) {
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return String(str || '').replace(/[&<>"']/g, (m) => map[m]);
+  }
+
+  function tagClass(lean) {
+    const l = String(lean || '').toLowerCase();
+    if (l.includes('fresh')) return 'variant-tag-fresh';
+    if (l.includes('craveable')) return 'variant-tag-craveable';
+    if (l.includes('delightful')) return 'variant-tag-delightful';
+    return 'variant-tag-craveable';
+  }
+
+  function renderStandardVariant(v, idx) {
+    const count = v.character_count ?? (v.copy ? v.copy.length : 0);
+    const limit = v.character_limit ?? null;
+    const inLimit = limit ? count <= limit : true;
+    const countClass = inLimit ? 'ok' : 'warn';
+    const countText = limit ? `${count} / ${limit} chars` : `${count} chars`;
+    const principleLabel = v.principle_lean ? `${String(idx + 1).padStart(2, '0')} · ${v.principle_lean}` : `Variant ${String(idx + 1).padStart(2, '0')}`;
+
+    return `
+      <div class="variant">
+        <div class="variant-tag ${tagClass(v.principle_lean)}">${escapeHtml(principleLabel)}</div>
+        <div class="variant-head">
+          <button class="variant-btn" data-copy-idx="${idx}">Copy</button>
+        </div>
+        <div class="variant-body" data-variant-text>${escapeHtml(v.copy)}</div>
+        <div class="variant-meta">
+          <span class="meta-count ${countClass}">${countText}</span>
+          ${v.angle ? `<span>${escapeHtml(v.angle)}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderEmailVariant(v, idx) {
+    const c = v.copy || {};
+    const fullText = `Subject: ${c.subject || ''}\nPreheader: ${c.preheader || ''}\n\n${c.opening || ''}\n\n${c.body || ''}\n\n${c.sign_off || ''}`;
+    const principleLabel = v.principle_lean ? `${String(idx + 1).padStart(2, '0')} · ${v.principle_lean}` : `Variant ${String(idx + 1).padStart(2, '0')}`;
+    return `
+      <div class="variant">
+        <div class="variant-tag ${tagClass(v.principle_lean)}">${escapeHtml(principleLabel)}</div>
+        <div class="variant-head">
+          <button class="variant-btn" data-copy-idx="${idx}">Copy all</button>
+        </div>
+        <div data-variant-text style="display:none">${escapeHtml(fullText)}</div>
+        <div class="email-field">
+          <div class="email-field-label">Subject</div>
+          <div class="email-field-body">${escapeHtml(c.subject)}</div>
+        </div>
+        <div class="email-field">
+          <div class="email-field-label">Preheader</div>
+          <div class="email-field-body">${escapeHtml(c.preheader)}</div>
+        </div>
+        <div class="email-field">
+          <div class="email-field-label">Opening</div>
+          <div class="email-field-body">${escapeHtml(c.opening)}</div>
+        </div>
+        <div class="email-field">
+          <div class="email-field-label">Body</div>
+          <div class="email-field-body">${escapeHtml(c.body)}</div>
+        </div>
+        <div class="email-field">
+          <div class="email-field-label">Sign-off</div>
+          <div class="email-field-body">${escapeHtml(c.sign_off)}</div>
+        </div>
+        ${v.angle ? `<div class="variant-meta"><span>${escapeHtml(v.angle)}</span></div>` : ''}
+      </div>
+    `;
+  }
+
+  function renderGoogleBusinessVariant(v, idx) {
+    const c = v.copy || {};
+    const fullText = `${c.headline || ''}\n\n${c.body || ''}\n\nButton: ${c.button_type || ''}`;
+    const count = (c.body || '').length;
+    const principleLabel = v.principle_lean ? `${String(idx + 1).padStart(2, '0')} · ${v.principle_lean}` : `Variant ${String(idx + 1).padStart(2, '0')}`;
+    return `
+      <div class="variant">
+        <div class="variant-tag ${tagClass(v.principle_lean)}">${escapeHtml(principleLabel)}</div>
+        <div class="variant-head">
+          <button class="variant-btn" data-copy-idx="${idx}">Copy</button>
+        </div>
+        <div data-variant-text style="display:none">${escapeHtml(fullText)}</div>
+        <div class="gbiz-headline">${escapeHtml(c.headline)}</div>
+        <div class="gbiz-body">${escapeHtml(c.body)}</div>
+        <div><span class="gbiz-button-hint">Button: ${escapeHtml(c.button_type)}</span></div>
+        <div class="variant-meta">
+          <span class="meta-count ok">${count} chars body</span>
+          ${v.angle ? `<span>${escapeHtml(v.angle)}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderOutput(data) {
+    const body = document.getElementById('output-body');
+    const sub = document.getElementById('output-sub');
+    sub.textContent = `${data.channel || state.channel} · ${data.campaign_type || state.campaign_type}`;
+
+    const variations = data.variations || [];
+    if (variations.length === 0) {
+      body.innerHTML = `<div class="error">The model returned no variations. Try again or rephrase the brief.</div>`;
+      return;
+    }
+
+    let html = '';
+    variations.forEach((v, idx) => {
+      if (state.channel === 'Email body') {
+        html += renderEmailVariant(v, idx);
+      } else if (state.channel === 'Google Business') {
+        html += renderGoogleBusinessVariant(v, idx);
+      } else {
+        html += renderStandardVariant(v, idx);
+      }
+    });
+    body.innerHTML = html;
+
+    body.querySelectorAll('[data-copy-idx]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const variant = btn.closest('.variant');
+        const textEl = variant.querySelector('[data-variant-text]');
+        const text = textEl ? textEl.textContent : '';
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
+          btn.textContent = 'Copied';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = original;
+            btn.classList.remove('copied');
+          }, 1800);
+        } catch (err) {
+          btn.textContent = 'Copy failed';
+        }
+      });
+    });
+  }
+
+  function showLoading() {
+    const output = document.getElementById('output');
+    const body = document.getElementById('output-body');
+    const sub = document.getElementById('output-sub');
+    output.classList.add('visible');
+    sub.textContent = `${state.channel} · ${state.campaign_type}`;
+    body.innerHTML = `
+      <div class="status">
+        <div class="status-spinner"></div>
+        <div>Drafting three variations in the Sizzler voice...</div>
+      </div>
+    `;
+  }
+
+  function showError(msg) {
+    const output = document.getElementById('output');
+    const body = document.getElementById('output-body');
+    output.classList.add('visible');
+    body.innerHTML = `<div class="error">${escapeHtml(msg)}</div>`;
+  }
+
+  async function generate() {
+    const brief = document.getElementById('brief').value.trim();
+    const location = document.getElementById('location').value.trim();
+
+    if (!state.channel) return showError('Pick a channel first.');
+    if (!state.campaign_type) return showError('Pick a campaign type.');
+    if (!brief) return showError('Tell the tool what the copy is about.');
+    if (!state.cta) return showError('Pick a call to action.');
+
+    const btn = document.getElementById('generate-btn');
+    btn.disabled = true;
+    btn.textContent = 'Cooking...';
+    showLoading();
+
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          channel: state.channel,
+          campaign_type: state.campaign_type,
+          brief,
+          cta: state.cta,
+          location,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        showError(data.error || 'Something went wrong.');
+      } else {
+        renderOutput(data);
+      }
+    } catch (err) {
+      showError('Network error. Check your connection and try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Cook it up';
+    }
+  }
+
+  document.getElementById('generate-btn').addEventListener('click', generate);
+</script>
+
+</body>
+</html>

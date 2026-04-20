@@ -1,0 +1,9 @@
+{
+  "name": "sizzler-copy-studio",
+  "version": "1.0.0",
+  "description": "Internal copy generation tool for Sizzler brand team and franchisees",
+  "private": true,
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1"
+  }
+}
